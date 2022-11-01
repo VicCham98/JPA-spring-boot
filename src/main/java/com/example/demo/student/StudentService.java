@@ -2,7 +2,16 @@ package com.example.demo.student;
 
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,7 +26,29 @@ public class StudentService {
     }
 
     public List<Student> getStudents() {
-        return studentRepository.findAll();
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BooksPU");
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
+        Root<Student> root = criteriaQuery.from(Student.class);
+
+        List<Predicate> searchCriterias = new ArrayList<>();
+        searchCriterias.add(criteriaBuilder.like(root.get("name"), "%victor%"));
+        criteriaQuery.where(criteriaBuilder.and(searchCriterias.toArray(new Predicate[searchCriterias.size()])));
+//        criteriaQuery.select(root.get("name")).groupBy(root.get("name"));
+
+//        criteriaQuery.multiselect(root.get("name"), criteriaBuilder.count(root)).groupBy(root.get("name"));
+
+        return entityManager.createQuery(criteriaQuery).getResultList();
+
+//        criteriaQuery.select(studentRoot.get("name"));
+//        criteriaQuery.groupBy(studentRoot.get("name"));
+//        TypedQuery<Student> typedQuery = entityManager.createQuery(criteriaQuery);
+//        List<Student> studentList = typedQuery.getResultList();
+//        return studentList;
+//        return studentRepository.findAll();
     }
 
     public void addNewStudent(Student student) {
