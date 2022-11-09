@@ -1,15 +1,13 @@
 package com.example.demo.student;
 
+import com.example.demo.course.Course;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,22 +24,35 @@ public class StudentService {
     }
 
     public Object getStudents(long id) {
-//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BooksPU");
-//
-//        EntityManager entityManager = entityManagerFactory.createEntityManager();
-//
-//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
-//        Root<Student> root = criteriaQuery.from(Student.class);
-//
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BooksPU");
+
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
+        Root<Student> root = criteriaQuery.from(Student.class);
+
+        root.join("courses", JoinType.LEFT);
+
 //        List<Predicate> searchCriterias = new ArrayList<>();
 //        searchCriterias.add(criteriaBuilder.like(root.get("name"), "%victor%"));
-//        criteriaQuery.where(criteriaBuilder.and(searchCriterias.toArray(new Predicate[searchCriterias.size()])));
+
+//        Join<Student, Course> joinCourse = root.join("courses", JoinType.INNER);
+//        ListJoin<Student, Course> joinCourse = root.join("courses", JoinType.INNER);
+//
+//        searchCriterias.add(criteriaBuilder.equal(joinCourse.get("student_id"), root.get("id")));
+//        searchCriterias.add(root.join("courses").in(rootCourses.get("student_id")));
+//        searchCriterias.add(criteriaBuilder.equal(joinCourse.get("student_id"), root.get("courses")));
+
+//        criteriaQuery.where(criteriaBuilder.and(searchCriterias.toArray(new Predicate[searchCriterias.size()]))).distinct(true);
 //        criteriaQuery.select(root.get("name")).groupBy(root.get("name"));
+
+        criteriaQuery.distinct(true);
 
 //        criteriaQuery.multiselect(root.get("name"), criteriaBuilder.count(root)).groupBy(root.get("name"));
 
-//        return entityManager.createQuery(criteriaQuery).getResultList();
+        Object result =  entityManager.createQuery(criteriaQuery).getResultList();
+        return result;
 
 //        criteriaQuery.select(studentRoot.get("name"));
 //        criteriaQuery.groupBy(studentRoot.get("name"));
@@ -49,7 +60,7 @@ public class StudentService {
 //        List<Student> studentList = typedQuery.getResultList();
 //        return studentList;
 //        long number = 2;
-        return studentRepository.findById(id);
+//        return studentRepository.findById(id);
     }
 
     public void addNewStudent(Student student) {

@@ -34,7 +34,7 @@ public class Student {
     private String email;
     private String address;
 
-    @OneToMany(mappedBy = "student_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    @JsonManagedReference
     @JsonIgnoreProperties({"student_id"})
