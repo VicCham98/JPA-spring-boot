@@ -61,21 +61,26 @@ public class StudentService {
         studentRepository.save(student);
     }
 
-    @Transactional
+
     public void updateStudent(Long studentId, String name, String email) {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new IllegalStateException("student with"+ studentId +"does not exist!"));
 
-        if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name)) {
-            student.setName(name);
-        }
+//        Student student = new Student();
+//        student.setId(studentId);
+        student.setName(name);
+        studentRepository.save(student);
 
-        if (email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)) {
-           Optional<Student> studentOptional = studentRepository.findStudentsByEmail(email);
-           if (studentOptional.isPresent()) {
-               throw new IllegalStateException("email taken");
-           }
-
-           student.setEmail(email);
-        }
+//        if (name != null && name.length() > 0 && !Objects.equals(student.getName(), name)) {
+//            student.setName(name);
+//        }
+//
+//        if (email != null && email.length() > 0 && !Objects.equals(student.getEmail(), email)) {
+//           Optional<Student> studentOptional = studentRepository.findStudentsByEmail(email);
+//           if (studentOptional.isPresent()) {
+//               throw new IllegalStateException("email taken");
+//           }
+//
+//           student.setEmail(email);
+//        }
     }
 }

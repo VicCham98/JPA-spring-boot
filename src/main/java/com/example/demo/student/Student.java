@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -7,6 +9,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table
+@DynamicUpdate(value = true)
+@DynamicInsert
 public class Student {
     @Id
     @SequenceGenerator(
