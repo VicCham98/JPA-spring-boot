@@ -1,10 +1,7 @@
 package com.example.demo.student;
 
 import com.example.demo.course.Course;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
@@ -37,9 +34,10 @@ public class Student {
     private String email;
     private String address;
 
-    @OneToMany(mappedBy="student_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnoreProperties({"student_id"})
     private List<Course> courses;
 
     public List<Course> getCourses() {

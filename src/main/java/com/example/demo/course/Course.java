@@ -19,7 +19,7 @@ public class Course {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="student_id")
-    @JsonBackReference
+//    @JsonBackReference
     private Student student_id;
 
     public Integer getId() {
