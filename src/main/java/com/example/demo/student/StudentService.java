@@ -25,30 +25,31 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public List<Student> getStudents() {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BooksPU");
-
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
-        Root<Student> root = criteriaQuery.from(Student.class);
-
-        List<Predicate> searchCriterias = new ArrayList<>();
-        searchCriterias.add(criteriaBuilder.like(root.get("name"), "%victor%"));
-        criteriaQuery.where(criteriaBuilder.and(searchCriterias.toArray(new Predicate[searchCriterias.size()])));
+    public Object getStudents(long id) {
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("BooksPU");
+//
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Student> criteriaQuery = criteriaBuilder.createQuery(Student.class);
+//        Root<Student> root = criteriaQuery.from(Student.class);
+//
+//        List<Predicate> searchCriterias = new ArrayList<>();
+//        searchCriterias.add(criteriaBuilder.like(root.get("name"), "%victor%"));
+//        criteriaQuery.where(criteriaBuilder.and(searchCriterias.toArray(new Predicate[searchCriterias.size()])));
 //        criteriaQuery.select(root.get("name")).groupBy(root.get("name"));
 
 //        criteriaQuery.multiselect(root.get("name"), criteriaBuilder.count(root)).groupBy(root.get("name"));
 
-        return entityManager.createQuery(criteriaQuery).getResultList();
+//        return entityManager.createQuery(criteriaQuery).getResultList();
 
 //        criteriaQuery.select(studentRoot.get("name"));
 //        criteriaQuery.groupBy(studentRoot.get("name"));
 //        TypedQuery<Student> typedQuery = entityManager.createQuery(criteriaQuery);
 //        List<Student> studentList = typedQuery.getResultList();
 //        return studentList;
-//        return studentRepository.findAll();
+//        long number = 2;
+        return studentRepository.findById(id);
     }
 
     public void addNewStudent(Student student) {

@@ -1,14 +1,20 @@
 package com.example.demo.student;
 
+import com.example.demo.course.Course;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "student")
 @DynamicUpdate(value = true)
 @DynamicInsert
 public class Student {
@@ -30,6 +36,19 @@ public class Student {
     private LocalDate doB;
     private String email;
     private String address;
+
+    @OneToMany(mappedBy="student_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonManagedReference
+    private List<Course> courses;
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
     public Student() {
     }
@@ -105,6 +124,8 @@ public class Student {
                 ", age=" + age +
                 ", doB=" + doB +
                 ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", courses=" + courses +
                 '}';
     }
 }

@@ -16,8 +16,8 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> getStudents() {
-        return studentService.getStudents();
+    public Object getStudents(@RequestParam(required = false) Long id) {
+        return studentService.getStudents(id);
     }
 
     @PostMapping
